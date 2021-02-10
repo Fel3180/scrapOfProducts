@@ -23,14 +23,14 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @Validated
 @Api(tags = { "Scrap of products" })
-public class ScrapProductController {
+public class ProductController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScrapProductController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
 	private final ProductService productService;
 
 	@Autowired
-	public ScrapProductController(final ProductService productService) {
+	public ProductController(final ProductService productService) {
 
 		this.productService = productService;
 	}
