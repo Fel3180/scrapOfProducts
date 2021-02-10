@@ -67,5 +67,4 @@ public class MongoConfig {
 			return Date.from(source.toInstant());
 		}
 	}
-
 }

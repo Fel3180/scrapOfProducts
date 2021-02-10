@@ -15,21 +15,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Autowired
 	private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
-	//	@Autowired
-	//	private final ControllerRequestInterceptor controllerRequestInterceptor;
-
-	//	@Autowired
-	//	public WebMvcConfig(final ControllerRequestInterceptor controllerRequestInterceptor) {
-	//
-	//		this.controllerRequestInterceptor = controllerRequestInterceptor;
-	//	}
-
-	//	@Override
-	//	public void addInterceptors(final InterceptorRegistry registry) {
-	//
-	//		registry.addInterceptor(controllerRequestInterceptor);
-	//	}
-
 	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 
