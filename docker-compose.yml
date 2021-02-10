@@ -1,0 +1,21 @@
+version: '2.1'
+services:
+  mongo:
+    image: mongo:3.6.1
+    container_name: "mongodb-scrap"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - MONGO_DATA:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 27017:27017
+    command: mongod
+
+volumes:
+  MONGO_DATA:
