@@ -2,7 +2,9 @@ package com.scrap.product.api.services;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -13,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.mongodb.MongoException;
 import com.scrap.product.api.domain.model.Product;
 import com.scrap.product.api.repository.ProductRepository;
 import com.scrap.product.api.vo.ProductResponseVo;
@@ -27,6 +30,14 @@ class ProductServiceTest {
 
 	@InjectMocks
 	private ProductService productService;
+
+	@Test
+	void whenAnErrorOccursMustReturnNull() {
+
+		doThrow(MongoException.class).when(productRepository).findProductByUrl(URL);
+		final ProductResponseVo productResponseVo = productService.processProduct(URL);
+		assertThat(productResponseVo, nullValue());
+	}
 
 	@Test
 	void shouldAlwaysReturnTheDataRetrievedFromTheDatabase() {

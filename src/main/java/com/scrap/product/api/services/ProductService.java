@@ -7,12 +7,10 @@ import java.util.Objects;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import com.scrap.product.api.domain.model.Product;
 import com.scrap.product.api.repository.ProductRepository;
@@ -34,38 +32,27 @@ public class ProductService {
 
 	public ProductResponseVo processProduct(final String url) {
 
-		Product productPersisted = productRepository.findProductByUrl(url);
-
-		if (Objects.nonNull(productPersisted)) {
+		try {
+			Product productPersisted = productRepository.findProductByUrl(url);
+			if (Objects.isNull(productPersisted)) {
+				productPersisted = extractProductDataOnWebSite(url);
+			}
 			return new ProductResponseVo(productPersisted.getTitle(), productPersisted.getImage(), productPersisted.getPrice(),
 					productPersisted.getDescription(), productPersisted.getUrl());
-		} else {
-			try {
-				final Document doc = Jsoup.connect(url).timeout(TIMEOUT).get();
-
-				final Instant createdDate = Instant.now();
-
-				String title = null;
-				String image = null;
-				for (final Element element : doc.select("div")) {
-					if (doc.title() == null) {
-						title = element.select("[title]").text();
-						System.out.println(element.select("[title]").text());
-					} else {
-						title = doc.title();
-					}
-
-					image = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]").get(0).baseUri();
-				}
-
-				productPersisted = productRepository.save(new Product(title, image, BigDecimal.TEN, "felipe", url, createdDate));
-
-				return new ProductResponseVo(productPersisted.getTitle(), productPersisted.getImage(), productPersisted.getPrice(),
-						productPersisted.getDescription(), productPersisted.getUrl());
-			} catch (final HttpStatusCodeException | IOException e) {
-				LOGGER.debug("ERROR", e);
-				return null;
-			}
+		} catch (final Exception e) {
+			LOGGER.debug("Occurred an error", e);
+			return null;
 		}
+	}
+
+	private Product extractProductDataOnWebSite(final String url) throws IOException {
+
+		final Instant createdDate = Instant.now();
+		final Document doc = Jsoup.connect(url).timeout(TIMEOUT).get();
+
+		final String title = doc.select("html > head > title").text();
+		final String img = doc.select("img[src$=.jpg]").text();
+
+		return productRepository.save(new Product(title, img, BigDecimal.TEN, "felipe", url, createdDate));
 	}
 }
