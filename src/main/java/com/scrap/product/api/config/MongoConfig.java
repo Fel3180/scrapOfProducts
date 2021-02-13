@@ -16,20 +16,12 @@ import com.google.common.collect.ImmutableList;
 @Configuration
 public class MongoConfig {
 
-	/**
-	 * Show to Spring that we have two types of conversions deployed to use whenever needed.
-	 *
-	 * @return
-	 */
 	@Bean
 	public MongoCustomConversions customConversions() {
 
 		return new MongoCustomConversions(ImmutableList.of(DateToOffsetDateTimeConverter.INSTANCE, OffsetDateTimeToDateConverter.INSTANCE));
 	}
 
-	/**
-	 * Show to the Mongo driver how to convert {@link Date} to {@link OffsetDateTime}. Otherwise, it will not convert by itself.
-	 */
 	@ReadingConverter
 	private static final class DateToOffsetDateTimeConverter implements Converter<Date, OffsetDateTime> {
 
@@ -46,9 +38,6 @@ public class MongoConfig {
 		}
 	}
 
-	/**
-	 * Show to the Mongo driver how to convert {@link OffsetDateTime} to {@link Date}. Otherwise, it will not convert by itself.
-	 */
 	@WritingConverter
 	private static final class OffsetDateTimeToDateConverter implements Converter<OffsetDateTime, Date> {
 

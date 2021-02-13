@@ -15,6 +15,7 @@ public class MongoMappingConfig {
 
 	@Autowired
 	MongoDatabaseFactory mongoDbFactory;
+
 	@Autowired
 	MongoMappingContext mongoMappingContext;
 

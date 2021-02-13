@@ -2,11 +2,6 @@ server:
   port: ${SERVER_PORT:8082}
   http2:
     enabled: true
-  compression:
-    enabled: true
-    mime-types: application/json
-    min-response-size: 1024
-
 
 #Logs
 logging:

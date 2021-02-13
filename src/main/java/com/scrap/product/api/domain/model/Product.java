@@ -1,13 +1,12 @@
 package com.scrap.product.api.domain.model;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
-import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Product {
-
-	@Id
-	private String id;
 
 	private String title;
 
@@ -19,29 +18,22 @@ public class Product {
 
 	private String url;
 
+	private Instant createdDate;
+
 	public Product() {
 
 		super();
 	}
 
-	public Product(String id, String title, String image, BigDecimal price, String description, String url) {
+	public Product(final String title, final String image, final BigDecimal price, final String description, final String url,
+			final Instant createdDate) {
 
-		this.id = id;
 		this.title = title;
 		this.image = image;
 		this.price = price;
 		this.description = description;
 		this.url = url;
-	}
-
-	public String getId() {
-
-		return id;
-	}
-
-	public void setId(String id) {
-
-		this.id = id;
+		this.createdDate = createdDate;
 	}
 
 	public String getTitle() {
@@ -49,7 +41,7 @@ public class Product {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 
 		this.title = title;
 	}
@@ -59,7 +51,7 @@ public class Product {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(final String image) {
 
 		this.image = image;
 	}
@@ -69,7 +61,7 @@ public class Product {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(final BigDecimal price) {
 
 		this.price = price;
 	}
@@ -79,7 +71,7 @@ public class Product {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 
 		this.description = description;
 	}
@@ -89,8 +81,18 @@ public class Product {
 		return url;
 	}
 
-	public void setUrl(String url) {
+	public void setUrl(final String url) {
 
 		this.url = url;
+	}
+
+	public Instant getCreatedDate() {
+
+		return createdDate;
+	}
+
+	public void setCreatedDate(final Instant createdDate) {
+
+		this.createdDate = createdDate;
 	}
 }

@@ -1,5 +1,8 @@
 package com.scrap.product.api.controllers;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +43,7 @@ public class ProductController {
 			@ApiResponse(code = 403, message = "Forbidden"), @ApiResponse(code = 404, message = "Not found") })
 	@GetMapping(path = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProductResponseVo> get(
-			@ApiParam(value = "URL to get details of products", required = true) @RequestParam @URL(message = "Please, enter a valid URL.") final String url) {
+			@ApiParam(value = "URL to get details of products", required = true) @NotNull @NotEmpty @RequestParam @URL(message = "Please, enter a valid URL.") final String url) {
 
 		LOGGER.debug("Received GET request");
 		return ResponseEntity.ok(productService.processProduct(url));

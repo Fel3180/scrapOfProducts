@@ -35,9 +35,8 @@ public class SwaggerConfig {
 	private String baseUrl;
 
 	@Bean
-	public Docket chargeApi() {
+	public Docket productApi() {
 
-		// responses
 		final ResponseMessage unauthorizedResponse = buildResponseMessage(HttpStatus.UNAUTHORIZED, ApiConstants.UNAUTHORIZED_ACCESS);
 
 		final ResponseMessage forbiddenResponse = buildResponseMessage(HttpStatus.FORBIDDEN, ApiConstants.ACCESS_DENIED);
@@ -62,8 +61,7 @@ public class SwaggerConfig {
 
 	@Bean
 	public UiConfiguration uiConfig() {
-		// disabling to avoid error with the microservice version in the URL.
-		// See issue #35886
+
 		return UiConfigurationBuilder.builder().displayRequestDuration(true).validatorUrl(Strings.EMPTY).build();
 	}
 
