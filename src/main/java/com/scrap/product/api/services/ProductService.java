@@ -47,15 +47,27 @@ public class ProductService {
 
 	private Product extractProductDataOnWebSite(final String url) throws IOException {
 
-		final Instant createdDate = Instant.now();
 		final Document doc = Jsoup.connect(url).timeout(TIMEOUT).get();
 
-		final BigDecimal price = new BigDecimal(
-				doc.getElementsMatchingOwnText("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})$").get(0).toString().replaceAll("\\D+", ""));
+		final Instant createdDate = Instant.now();
+		final String price;
+		String title = null;
+		String img = null;
 
-		final String title = doc.select("html > head > title").text();
-		final String img = doc.select("img[src$=.jpg]").text();
+		BigDecimal priceConverted = BigDecimal.ZERO;
 
-		return productRepository.save(new Product(title, img, price, "lorem lorem", url, createdDate));
+		if (Objects.nonNull(doc)) {
+
+			price = doc.getElementsMatchingOwnText("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})$").get(0).toString();
+
+			if (price != null) {
+				priceConverted = new BigDecimal(price.replaceAll("[^0-9,.]", "").replace(",", "."));
+			}
+
+			title = doc.select("html > head > title").text();
+			img = doc.select("img[src$=.jpg]").text();
+		}
+
+		return productRepository.save(new Product(title, img, priceConverted, "lorem lorem", url, createdDate));
 	}
 }
