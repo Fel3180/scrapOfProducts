@@ -7,14 +7,6 @@ server:
 logging:
   level:
     ROOT: ${LOG_ROOT_LEVEL:INFO}
-    org:
-      springframework:
-        web:
-          filter:
-            CommonsRequestLoggingFilter: ${LOG_REQUEST_LEVEL:DEBUG}
-  request-payload:
-    enabled: ${LOG_REQUEST_ENABLED:true}
-    max-payload-length: ${LOG_REQUEST_MAX_PAYLOAD_LENGTH:1000}
 
 spring:
   application:
@@ -26,8 +18,3 @@ spring:
 
 # Swagger configurations
 swaggerBaseUrl: ${SWAGGER_BASE_URL:localhost:${server.port}}
-
-threadPoolSize: ${BUSINESS_RULE_THREAD_POOL_SIZE:4}
-
-service:
-  timeout: ${TIMEOUT_REQUEST_SERVICE:2000}
