@@ -3,6 +3,7 @@ package com.scrap.product.api.services;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
@@ -55,9 +56,21 @@ class ProductServiceTest {
 		assertThat(product.getPrice(), is(productResponseVo.getPrice()));
 	}
 
-	//	@Test
-	//	void mustCollectTheDataAgainIfThereIsNoRecordInDatabase() {
-	//
-	//	}
+	@Test
+	void mustCollectTheDataAgainIfThereIsNoRecordInDatabase() {
 
+		final Instant createdDate = Instant.parse("2021-02-13T15:12:35Z");
+		final Product product = new Product("title", "image", BigDecimal.TEN, "description", URL, createdDate);
+		final ProductResponseVo productResponseVo = new ProductResponseVo("title", "image", BigDecimal.TEN, "description", URL);
+
+		doReturn(null).when(productRepository).findProductByUrl(URL);
+		doReturn(product).when(productRepository).save(any());
+		final ProductResponseVo productResponseVoResult = productService.processProduct(URL);
+
+		assertThat(productResponseVo.getTitle(), is(productResponseVoResult.getTitle()));
+		assertThat(productResponseVo.getDescription(), is(productResponseVoResult.getDescription()));
+		assertThat(productResponseVo.getImage(), is(productResponseVoResult.getImage()));
+		assertThat(productResponseVo.getUrl(), is(productResponseVoResult.getUrl()));
+		assertThat(productResponseVo.getPrice(), is(productResponseVoResult.getPrice()));
+	}
 }

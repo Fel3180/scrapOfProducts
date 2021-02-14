@@ -50,9 +50,12 @@ public class ProductService {
 		final Instant createdDate = Instant.now();
 		final Document doc = Jsoup.connect(url).timeout(TIMEOUT).get();
 
+		final BigDecimal price = new BigDecimal(
+				doc.getElementsMatchingOwnText("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})$").get(0).toString().replaceAll("\\D+", ""));
+
 		final String title = doc.select("html > head > title").text();
 		final String img = doc.select("img[src$=.jpg]").text();
 
-		return productRepository.save(new Product(title, img, BigDecimal.TEN, "felipe", url, createdDate));
+		return productRepository.save(new Product(title, img, price, "lorem lorem", url, createdDate));
 	}
 }
