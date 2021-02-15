@@ -65,7 +65,7 @@ public class ProductService {
 			}
 
 			title = doc.select("html > head > title").text();
-			img = doc.select("img[src$=.jpg]").text();
+			img = doc.select("div:not(#div) > img ").get(0).attr("src");
 		}
 
 		return productRepository.save(new Product(title, img, priceConverted, "lorem lorem", url, createdDate));
