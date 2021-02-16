@@ -1,6 +1,6 @@
 # Introduction
 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.
+This project consists of browsing pages and other content for the analysis, indexing and collection of specific sets of information.
 
 # Getting Started
 
